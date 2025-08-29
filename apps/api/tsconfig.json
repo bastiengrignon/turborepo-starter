@@ -15,7 +15,7 @@
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"],
-  "ts-node": {
+  "ts-node-dev": {
     "files": true
   }
 }
