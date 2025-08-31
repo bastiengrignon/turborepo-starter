@@ -8,7 +8,9 @@ import { useSignUpHooks } from './SignUp.hooks';
 
 const SignUp: FC = () => {
   const { t } = useTranslation('auth');
-  const { registerForm, registerLoading, handleRegister } = useSignUpHooks({ t });
+  const { registerForm, visiblePassword, registerLoading, handleRegister, toggleVisiblePassword } = useSignUpHooks({
+    t,
+  });
   return (
     <AuthLayout title={t('signUp')}>
       <form onSubmit={registerForm.onSubmit(handleRegister)}>
@@ -38,6 +40,8 @@ const SignUp: FC = () => {
           />
           <PasswordInput
             required
+            visible={visiblePassword}
+            onVisibilityChange={toggleVisiblePassword}
             label={t('password')}
             placeholder={t('password')}
             key={registerForm.key('password')}
@@ -45,6 +49,8 @@ const SignUp: FC = () => {
           />
           <PasswordInput
             required
+            visible={visiblePassword}
+            onVisibilityChange={toggleVisiblePassword}
             label={t('confirmPassword')}
             placeholder={t('confirmPassword')}
             key={registerForm.key('confirmPassword')}

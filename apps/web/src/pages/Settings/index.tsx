@@ -26,6 +26,8 @@ const Settings: FC = () => {
     user,
     userForm,
     updatePasswordForm,
+    visiblePassword,
+    toggleVisiblePassword,
     updateUserLoading,
     updatePasswordLoading,
     handleUpdateProfilePicture,
@@ -101,6 +103,8 @@ const Settings: FC = () => {
               />
               <PasswordInput
                 required
+                visible={visiblePassword}
+                onVisibilityChange={toggleVisiblePassword}
                 label={t('settings.account.newPassword')}
                 placeholder={t('settings.account.newPassword')}
                 key={updatePasswordForm.key('newPassword')}
@@ -108,6 +112,8 @@ const Settings: FC = () => {
               />
               <PasswordInput
                 required
+                visible={visiblePassword}
+                onVisibilityChange={toggleVisiblePassword}
                 label={t('settings.account.confirmNewPassword')}
                 placeholder={t('settings.account.confirmNewPassword')}
                 key={updatePasswordForm.key('confirmNewPassword')}

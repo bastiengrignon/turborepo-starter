@@ -1,4 +1,5 @@
 import { hasLength, isEmail, matches, matchesField, useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import type { TFunction } from 'i18next';
 import { useCallback, useState } from 'react';
@@ -24,6 +25,7 @@ export const useSignUpHooks = ({ t }: SignUpHooksInputProps) => {
   const navigate = useNavigate();
 
   const [registerLoading, setRegisterLoading] = useState(false);
+  const [visiblePassword, { toggle: toggleVisiblePassword }] = useDisclosure(false);
 
   const registerForm = useForm<SignUpFormValues>({
     mode: 'uncontrolled',
@@ -79,7 +81,9 @@ export const useSignUpHooks = ({ t }: SignUpHooksInputProps) => {
 
   return {
     registerForm,
+    visiblePassword,
     registerLoading,
     handleRegister,
+    toggleVisiblePassword,
   };
 };

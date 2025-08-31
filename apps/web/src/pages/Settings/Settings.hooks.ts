@@ -1,4 +1,5 @@
 import { hasLength, isEmail, matches, matchesField, useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import type { TFunction } from 'i18next';
 import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
@@ -30,6 +31,7 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
 
   const [updateUserLoading, setUpdateUserLoading] = useState(false);
   const [updatePasswordLoading, setUpdatePasswordLoading] = useState(false);
+  const [visiblePassword, { toggle: toggleVisiblePassword }] = useDisclosure(false);
 
   const userForm = useForm<UserFormValues>({
     mode: 'uncontrolled',
@@ -134,6 +136,8 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
     user,
     userForm,
     updatePasswordForm,
+    visiblePassword,
+    toggleVisiblePassword,
     updateUserLoading,
     updatePasswordLoading,
     handleUpdateProfilePicture,
