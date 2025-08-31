@@ -12,8 +12,8 @@ const healthcheckSchema = {
   },
 };
 
-export const healthcheckRoutes = ({ app }: { app: FastifyInstance }) => {
-  app.get('/healthcheck', { schema: healthcheckSchema }, async () => ({
+export const healthcheckRoutes = (app: FastifyInstance) => {
+  app.get('/', { schema: healthcheckSchema }, () => ({
     status: 'OK',
     message: 'API is healthy',
   }));

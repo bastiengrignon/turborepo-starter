@@ -5,7 +5,7 @@ import { auth } from '../utils/auth';
 import { healthcheckRoutes } from './routes/healthcheck';
 
 export const routes = async (app: FastifyInstance) => {
-  healthcheckRoutes({ app });
+  app.register(healthcheckRoutes, { prefix: '/healthcheck' });
   app.route({
     method: ['GET', 'POST'],
     url: '/auth/*',
