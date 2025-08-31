@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { localization } from 'better-auth-localization';
 
 import { TIME } from '../constants';
 import serverConfig from './config';
@@ -37,4 +38,10 @@ export const auth = betterAuth({
       maxAge: 5 * 60,
     },
   },
+  plugins: [
+    localization({
+      defaultLocale: 'fr-FR',
+      fallbackLocale: 'default',
+    }),
+  ],
 });
