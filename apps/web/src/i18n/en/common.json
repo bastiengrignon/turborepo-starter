@@ -1,0 +1,24 @@
+{
+  "appName": "My app",
+  "header": {
+    "logout": "Logout",
+    "settings": "Settings"
+  },
+  "save": "Save",
+  "error": "Error",
+  "languages": {
+    "en": "English",
+    "fr": "French"
+  },
+  "settings": {
+    "account": {
+      "title": "Account",
+      "personalInformation": "Personal information",
+      "password": "Password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password",
+      "updatePassword": "Update password"
+    }
+  }
+}

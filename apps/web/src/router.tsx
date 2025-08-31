@@ -4,16 +4,14 @@ import PrivateRoute from './components/PrivateRoute';
 import Layout from './layout/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Settings from './pages/Settings';
 import SignUp from './pages/SignUp';
-import UserSettings from './pages/UserSettings';
 
 export const routes = {
   home: '/',
   login: '/login',
   signup: '/signup',
-  user: {
-    settings: '/user/:userId/settings',
-  },
+  settings: '/settings',
 };
 
 export const router = createBrowserRouter([
@@ -29,8 +27,8 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: routes.user.settings,
-        element: <UserSettings />,
+        path: routes.settings,
+        element: <Settings />,
       },
     ],
   },

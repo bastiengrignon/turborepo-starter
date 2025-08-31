@@ -1,0 +1,24 @@
+{
+  "appName": "Mon application",
+  "header": {
+    "logout": "Déconnexion",
+    "settings": "Paramètres"
+  },
+  "save": "Enregistrer",
+  "error": "Erreur",
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français"
+  },
+  "settings": {
+    "account": {
+      "title": "Compte",
+      "personalInformation": "Information personnelle",
+      "password": "Mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmNewPassword": "Confirmer le nouveau mot de passe",
+      "updatePassword": "Mettre à jour le mot de passe"
+    }
+  }
+}

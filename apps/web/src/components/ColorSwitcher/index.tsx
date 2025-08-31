@@ -2,16 +2,23 @@ import { ActionIcon, ThemeIcon, useComputedColorScheme, useMantineColorScheme } 
 import type { FC } from 'react';
 import { TbMoon, TbSun } from 'react-icons/tb';
 
+import { useMobileQuery } from '../../lib/responsive';
+
 const ColorSwitcher: FC = () => {
+  const isMobile = useMobileQuery();
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   return (
-    <ActionIcon size="lg" onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}>
-      <ThemeIcon darkHidden>
+    <ActionIcon
+      size={isMobile ? 'md' : 'lg'}
+      variant="light"
+      onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+    >
+      <ThemeIcon darkHidden variant="transparent">
         <TbSun />
       </ThemeIcon>
-      <ThemeIcon lightHidden>
+      <ThemeIcon lightHidden variant="transparent">
         <TbMoon />
       </ThemeIcon>
     </ActionIcon>

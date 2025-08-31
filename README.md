@@ -11,6 +11,7 @@ A ready to use template for a Turborepo monorepo.
 - [React Router](https://reactrouter.com) for routing
 - [Better Auth](https://www.better-auth.com) for authentication
 - [React icons](https://react-icons.github.io/react-icons) as icons library
+- [React i18n](https://react.i18next.com) for internationalization
 
 
 ## Back-end

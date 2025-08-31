@@ -1,8 +1,10 @@
-import { hasLength, isEmail, matchesField, useForm } from '@mantine/form';
+import { hasLength, isEmail, matches, matchesField, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import type { TFunction } from 'i18next';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { REGEXPS } from '../../constants/regexp';
 import { authClient } from '../../lib/auth-client';
 import { routes } from '../../router';
 
@@ -14,7 +16,11 @@ type SignUpFormValues = {
   confirmPassword: string;
 };
 
-export const useSignUpHooks = () => {
+interface SignUpHooksInputProps {
+  t: TFunction;
+}
+
+export const useSignUpHooks = ({ t }: SignUpHooksInputProps) => {
   const navigate = useNavigate();
 
   const [registerLoading, setRegisterLoading] = useState(false);
@@ -30,11 +36,11 @@ export const useSignUpHooks = () => {
     },
     validateInputOnBlur: true,
     validate: {
-      firstName: hasLength({ min: 2 }, 'Le prénom doit contenir au moins 2 caractères'),
-      lastName: hasLength({ min: 2 }, 'Le nom doit contenir au moins 2 caractères'),
-      email: isEmail('Email invalides'),
-      password: (value) => (value.length > 0 ? null : 'Mot de passe est requis'),
-      confirmPassword: matchesField('password', 'Les mots de passe ne correspondent pas'),
+      firstName: hasLength({ min: 2 }, t('errors.firstName')),
+      lastName: hasLength({ min: 2 }, t('errors.lastName')),
+      email: isEmail(t('errors.emailInvalid')),
+      password: matches(REGEXPS.PASSWORD, 'errors.passwordRegexp'),
+      confirmPassword: matchesField('password', t('errors.confirmPassword')),
     },
   });
 
@@ -58,7 +64,7 @@ export const useSignUpHooks = () => {
               registerForm.setFieldError('email', error.message);
             } else {
               notifications.show({
-                title: 'Erreur',
+                title: t('common:error'),
                 message: error.message,
                 color: 'red',
               });
@@ -68,7 +74,7 @@ export const useSignUpHooks = () => {
         }
       );
     },
-    [navigate]
+    [navigate, t]
   );
 
   return {

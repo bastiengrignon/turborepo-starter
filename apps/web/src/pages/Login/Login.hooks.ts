@@ -1,8 +1,10 @@
-import { useForm } from '@mantine/form';
+import { isEmail, matches, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import type { TFunction } from 'i18next';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { REGEXPS } from '../../constants/regexp';
 import { authClient } from '../../lib/auth-client';
 import { routes } from '../../router';
 
@@ -11,7 +13,11 @@ type LoginFormValues = {
   password: string;
 };
 
-export const useLoginHooks = () => {
+interface LoginHooksInputProps {
+  t: TFunction;
+}
+
+export const useLoginHooks = ({ t }: LoginHooksInputProps) => {
   const navigate = useNavigate();
 
   const [loginLoading, setLoginLoading] = useState(false);
@@ -24,8 +30,8 @@ export const useLoginHooks = () => {
     },
     validateInputOnBlur: true,
     validate: {
-      email: (value) => (value.length > 0 ? null : "L'email est obligatoire"),
-      password: (value) => (value.length > 0 ? null : 'Mot de passe obligatoire'),
+      email: isEmail(t('errors.emailInvalid')),
+      password: matches(REGEXPS.PASSWORD, t('errors.passwordInvalid')),
     },
   });
 
@@ -36,7 +42,7 @@ export const useLoginHooks = () => {
         onSuccess: () => navigate(routes.home),
         onError: ({ error }) => {
           notifications.show({
-            title: 'Erreur',
+            title: t('common:error'),
             message: error.message,
             color: 'red',
           });
@@ -44,7 +50,7 @@ export const useLoginHooks = () => {
         onResponse: () => setLoginLoading(false),
       });
     },
-    [navigate]
+    [navigate, t]
   );
 
   return {

@@ -7,6 +7,8 @@ import { RouterProvider } from 'react-router';
 import { router } from './router';
 import { theme } from './theme';
 
+import './lib/i18n';
+
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 
