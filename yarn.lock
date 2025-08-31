@@ -350,10 +350,10 @@
   resolved "https://registry.yarnpkg.com/@levischuck/tiny-cbor/-/tiny-cbor-0.2.11.tgz#833ddf7f3627dcb62d855d9c184061b4a1a875b3"
   integrity sha512-llBRm4dT4Z89aRsm6u2oEZ8tfwL/2l6BwpZ7JcyieouniDECM5AqNgr/y08zalEIvW3RSK4upYyybDcmjXqAow==
 
-"@mantine/core@^8.2.7":
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-8.2.7.tgz#4620765b935e9c4d50aafcdead618ea6f8dd2038"
-  integrity sha512-gfVDf/qFxt66PrsktYEJt/MZbiNo3KCx6PxKKcskSe/J2g5g1kf4nhhvBFlYaicDX93PfT4MgTnipyfJQ09NDA==
+"@mantine/core@^8.2.8":
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-8.2.8.tgz#2ef5fd003dec12f96d462ec91d87e5b5f25ff7b1"
+  integrity sha512-dybAXrlQ+QiIhpnVCkdH6P4Sjm9I9RymYXfDp97oj9KfGRMEJGLDdPAwp/2GhXe7UdDkzqD48JCkbfRWF2Q+qA==
   dependencies:
     "@floating-ui/react" "^0.26.28"
     clsx "^2.1.1"
@@ -362,31 +362,31 @@
     react-textarea-autosize "8.5.9"
     type-fest "^4.27.0"
 
-"@mantine/form@^8.2.7":
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-8.2.7.tgz#b3eed66c4b84c14a0ac26a01a9887c639f7f07ff"
-  integrity sha512-bhOygfZMo+vOX37xBhUCCiOdudNMFQzxm/DOHzwIhGsrmgdhyV0Kof/+zDEfj1/09GtjFP9ecYvmnL5zhZv+6w==
+"@mantine/form@^8.2.8":
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-8.2.8.tgz#14fc864be4fd9169088950148fec53b497a021e6"
+  integrity sha512-edigaUCmyxoPcqhMgkgJHXRgbzR1tym88xQNNgfGA1KYc9gr0BTk/3dOa5B93HIVdO9/DEXZwYKN4cjrKPDY+g==
   dependencies:
     fast-deep-equal "^3.1.3"
     klona "^2.0.6"
 
-"@mantine/hooks@^8.2.7":
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-8.2.7.tgz#815bfbd1cbfb439b30d8aa33c520af0eba8bd5de"
-  integrity sha512-DV0RdFBI0g0Bu7CWipIIiPK6d8+pTNXTbIOF4N+VZ6LAIpZPk5ldtb8sGaTVyQtQhEjrChrCxfkrLiNGTOAwiw==
+"@mantine/hooks@^8.2.8":
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-8.2.8.tgz#324ba966ccea6e33e8dfca5926df465e1fc5d998"
+  integrity sha512-KK1krCcXizWT6JF8gWexv58imQBbviylAJqSqdZ4zUPgrpe81ehMyfxo5Z9EZsnSwMxkB4RLMhCCJhC5g8GvLA==
 
-"@mantine/notifications@^8.2.7":
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-8.2.7.tgz#25f09d563091d3f1332972263ffc404ac7cd4de6"
-  integrity sha512-KXtueabwBIbgl1M5vmjzGBt88AOwhxkhmvQhEDC6UvGPtIlf4jw0BT0i3a54AKc1YwSCs0bUd91jKg5Oem2wpw==
+"@mantine/notifications@^8.2.8":
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-8.2.8.tgz#080955945061101eec2d9123536fd5956dc4c001"
+  integrity sha512-luNksAUkROoMzKCB/30nQ8o38wt54ktylbpBcTrAcjE1q00nH/IEYLS58iUYGf8l/xGBV1KH8jgSik58iqk++A==
   dependencies:
-    "@mantine/store" "8.2.7"
+    "@mantine/store" "8.2.8"
     react-transition-group "4.4.5"
 
-"@mantine/store@8.2.7":
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-8.2.7.tgz#1f4c9056cebdbca27895f42fe54a7e308a66447a"
-  integrity sha512-TQye6nRFDOQ+HQovQSjQlFHrivn6NqdiZAuytszOnB9jqgKSzPqQxK0mEynAxJsomaO9K1rrj7clZcPNgZc+Pw==
+"@mantine/store@8.2.8":
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-8.2.8.tgz#ffa43a39110da7ad0957311f109975af793c0b34"
+  integrity sha512-xma5vcJlcR2UN6NZj0Rhskfppmz6wUTY/52EBU9sKZw60e1iiuTX2Bk/sfUa34VKZF4cRS46VLz2qstyCJne4Q==
 
 "@noble/ciphers@^0.6.0":
   version "0.6.0"
