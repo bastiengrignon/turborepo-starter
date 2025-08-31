@@ -28,3 +28,10 @@ A ready to use template for a Turborepo monorepo.
 - ```build``` to build the apps
 - ```check-types``` to check the types
 - ```lint:fix``` to lint the code of all _apps_ using [BiomeJS](https://biomejs.dev/fr)
+
+
+## Configuration
+1. Start by copying the `.env.example` file to `.env` and adjust the values.
+2. Run `yarn` to install the dependencies.
+3. If you don't already have a Postgres database, create one using `docker-compose.yml` file
+4. Run `yarn dev` to start the apps.

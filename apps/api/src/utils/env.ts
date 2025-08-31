@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
-const DEFAULT_PORT = 4000;
+const DEFAULT_PORT = '4000';
 const SECRET_LENGTH = 32;
 
 import 'dotenv/config';
 
 const envSchema = z.object({
-  PORT: z.number().default(DEFAULT_PORT),
+  PORT: z.string().default(DEFAULT_PORT),
   DATABASE_URL: z.string(),
   BETTER_AUTH_SECRET: z.string().length(SECRET_LENGTH),
   BETTER_AUTH_URL: z.url(),

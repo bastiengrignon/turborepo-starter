@@ -16,7 +16,7 @@ const main = async () => {
   await initRoutes({ app });
 
   try {
-    await app.listen({ port: 4000, host: '0.0.0.0' });
+    await app.listen({ port: Number(env.PORT), host: '0.0.0.0' });
   } catch (error) {
     app.log.error(error);
     process.exit(1);

@@ -15,8 +15,6 @@ const Header: FC = () => {
       <Anchor component={Link} to={routes.home} underline="never" c="inherit">
         <Title order={3}>My App</Title>
       </Anchor>
-      {/*<Link to={routes.home}>*/}
-      {/*</Link>*/}
       <Group>
         <ColorSwitcher />
         <Menu width={220} position="bottom-end" transitionProps={{ transition: 'pop-top-right' }} withinPortal>

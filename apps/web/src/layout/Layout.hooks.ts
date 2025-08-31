@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import {useCallback, useEffect} from 'react';
 import { useNavigate } from 'react-router';
 
 import { authClient } from '../lib/auth-client';
@@ -18,6 +18,12 @@ export const useLayoutHooks = () => {
       }),
     [navigate]
   );
+
+  useEffect(() => {
+    if (!isPending && !session) {
+      navigate(routes.login);
+    }
+  }, [session, isPending, navigate]);
 
   return {
     session,
