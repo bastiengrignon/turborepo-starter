@@ -34,5 +34,5 @@ A ready to use template for a Turborepo monorepo.
 1. Start by copying the `.env.example` file to `.env` and adjust the values.
 2. Run `yarn` to install the dependencies.
 3. If you don't already have a Postgres database, create one using **docker-compose.yml** file (`docker-compose up -d`).
-4. Run `npx prisma migrate dev --name init` to create the database schema.
+4. Run `npx prisma db push` to create the database and tables.
 5. Run `yarn dev` to start the apps.
