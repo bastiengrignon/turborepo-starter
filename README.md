@@ -1,5 +1,5 @@
 # Turborepo Starter kit
-A ready to use template for a Turborepo monorepo.
+A ready-to-use template for a Turborepo monorepo.
 
 # Apps
 - `web`: a React app
@@ -13,12 +13,15 @@ A ready to use template for a Turborepo monorepo.
 - [React icons](https://react-icons.github.io/react-icons) as icons library
 - [React i18n](https://react.i18next.com) for internationalization
 
+It comes with a basic Mantine layout, with authentication pages, and a basic settings page to handle user updates.  
+
 
 ## Back-end
 - [Fastify](https://www.fastify.io) for the server
 - [Better Auth](https://www.better-auth.com) for authentication
 - [Prisma](https://www.prisma.io) for the Database
 
+A basic Fastify server with authentication routes handled by BetterAuth and Prisma DB. 
 
 # Packages
 - `typescript-config`: `tsconfig.json`s used throughout the monorepo
