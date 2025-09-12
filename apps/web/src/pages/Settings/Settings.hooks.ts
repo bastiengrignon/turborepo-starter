@@ -7,6 +7,7 @@ import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'reac
 import { REGEXPS } from '../../constants/regexp';
 import { authClient } from '../../lib/auth-client';
 import { useSession } from '../../lib/useSession';
+import { routes } from '../../router';
 
 interface UserFormValues {
   firstName: string;
@@ -25,7 +26,7 @@ interface SettingsHooksInputProps {
 }
 
 export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
-  const { user } = useSession();
+  const { user, session } = useSession();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -120,6 +121,29 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
     [t]
   );
 
+  const handleResetPassword = useCallback(async () => {
+    if (user?.email) {
+      await authClient.requestPasswordReset(
+        {
+          email: user.email,
+          redirectTo: `${window.location.origin}${routes.resetPassword}`,
+        },
+        {
+          onSuccess: async () => {
+            if (session) {
+              await authClient.revokeSessions();
+              await authClient.signOut();
+            }
+            notifications.show({
+              title: t('settings.account.emailResetTitle'),
+              message: t('settings.account.emailResetMessage'),
+            });
+          },
+        }
+      );
+    }
+  }, [t, user?.email, session]);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: no Mantine form object in dependencies
   useEffect(() => {
     if (user) {
@@ -144,5 +168,6 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
     handleUploadProfilePicture,
     handleUpdateUser,
     handleUpdatePassword,
+    handleResetPassword,
   };
 };

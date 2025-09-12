@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import { authClient } from '../lib/auth-client';

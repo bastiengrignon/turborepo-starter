@@ -1,6 +1,7 @@
 import { Anchor, Button, Flex, PasswordInput, SimpleGrid, Stack, TextInput } from '@mantine/core';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 
 import AuthLayout from '../../auth-layout';
 import { routes } from '../../router';
@@ -57,7 +58,7 @@ const SignUp: FC = () => {
             {...registerForm.getInputProps('confirmPassword')}
           />
           <Flex align="center" justify="space-between" mt="xl">
-            <Anchor href={routes.login} size="sm">
+            <Anchor size="sm" component={Link} to={routes.login}>
               {t('alreadyAccount')}
             </Anchor>
             <Button type="submit" loading={registerLoading}>

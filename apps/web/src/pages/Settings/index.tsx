@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TbRefresh } from 'react-icons/tb';
 
 import SettingsPanelLayout from '../../components/SettingsPanelLayout';
 import { useMobileQuery } from '../../lib/responsive';
@@ -34,6 +35,7 @@ const Settings: FC = () => {
     handleUploadProfilePicture,
     handleUpdateUser,
     handleUpdatePassword,
+    handleResetPassword,
   } = useSettingsHooks({ t });
 
   return (
@@ -120,9 +122,14 @@ const Settings: FC = () => {
                 {...updatePasswordForm.getInputProps('confirmNewPassword')}
               />
             </Stack>
-            <Button mt="md" type="submit" loading={updatePasswordLoading}>
-              {t('settings.account.updatePassword')}
-            </Button>
+            <Group mt="md" gap="xs">
+              <Button type="submit" loading={updatePasswordLoading}>
+                {t('settings.account.updatePassword')}
+              </Button>
+              <Button color="yellow" rightSection={<TbRefresh />} onClick={handleResetPassword}>
+                {t('settings.account.resetPassword')}
+              </Button>
+            </Group>
           </form>
         </SettingsPanelLayout>
       </Tabs.Panel>

@@ -18,7 +18,10 @@
       "currentPassword": "Mot de passe actuel",
       "newPassword": "Nouveau mot de passe",
       "confirmNewPassword": "Confirmer le nouveau mot de passe",
-      "updatePassword": "Mettre à jour le mot de passe"
+      "updatePassword": "Mettre à jour le mot de passe",
+      "resetPassword": "Réinitialiser le mot de passe",
+      "emailResetTitle": "Email envoyé",
+      "emailResetMessage": "Un mail vous a été envoyé pour réinitialiser votre mot de passe."
     }
   }
 }
