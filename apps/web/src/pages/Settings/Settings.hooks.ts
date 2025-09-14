@@ -1,5 +1,5 @@
 import { hasLength, isEmail, matches, matchesField, type TransformedValues, useForm } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useInputState } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useMutation } from '@tanstack/react-query';
 import type { TFunction } from 'i18next';
@@ -24,7 +24,10 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [emailAddressConfirmDeleteAccount, setEmailAddressConfirmDeleteAccount] = useInputState('');
   const [visiblePassword, { toggle: toggleVisiblePassword }] = useDisclosure(false);
+  const [openedDeleteAccountModal, { open: openDeleteAccountModal, close: closeDeleteAccountModal }] =
+    useDisclosure(false);
 
   const userForm = useForm({
     mode: 'uncontrolled',
@@ -129,6 +132,8 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
     }
   }, [resetPasswordMutation, user?.email]);
 
+  const handleDeleteAccount = useCallback(async () => await authClient.deleteUser(), []);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: no Mantine form object in dependencies
   useEffect(() => {
     if (user) {
@@ -145,15 +150,21 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
     user,
     userForm,
     updatePasswordForm,
+    openedDeleteAccountModal,
+    emailAddressConfirmDeleteAccount,
     visiblePassword,
-    toggleVisiblePassword,
     updateUserLoading,
     updatePasswordLoading,
     resetPasswordLoading,
+    setEmailAddressConfirmDeleteAccount,
+    toggleVisiblePassword,
+    openDeleteAccountModal,
+    closeDeleteAccountModal,
     handleUpdateProfilePicture,
     handleUploadProfilePicture,
     handleUpdateUser,
     handleUpdatePassword,
     handleResetPassword,
+    handleDeleteAccount,
   };
 };

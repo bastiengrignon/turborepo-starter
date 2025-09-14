@@ -24,14 +24,16 @@ export const auth = betterAuth({
       hash: async (password) => await bcrypt.hash(password, 10),
       verify: async ({ hash, password }) => await bcrypt.compare(password, hash),
     },
-    sendResetPassword: async ({ user, token, url }) => {
+    sendResetPassword: async ({ user, url }) =>
       await sendEmail({
         subject: `Reset password for ${user.name}`,
-        body: `Click on the link ${url} to reset your password: http://localhost:5173/reset-password?token=${token}`,
-      });
-    },
+        body: `Click on the link ${url} to reset your password`,
+      }),
   },
   user: {
+    deleteUser: {
+      enabled: true,
+    },
     additionalFields: {
       firstName: { type: 'string' },
       lastName: { type: 'string' },

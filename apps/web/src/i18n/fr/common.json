@@ -6,6 +6,8 @@
   },
   "save": "Enregistrer",
   "error": "Erreur",
+  "cancel": "Annuler",
+  "delete": "Supprimer",
   "languages": {
     "en": "Anglais",
     "fr": "Français"
@@ -21,7 +23,13 @@
       "updatePassword": "Mettre à jour le mot de passe",
       "resetPassword": "Réinitialiser le mot de passe",
       "emailResetTitle": "Email envoyé",
-      "emailResetMessage": "Un mail vous a été envoyé pour réinitialiser votre mot de passe."
+      "emailResetMessage": "Un mail vous a été envoyé pour réinitialiser votre mot de passe.",
+      "dangerZone": "Zone dangereuse",
+      "delete": {
+        "title": "Supprimer le compte",
+        "confirmAccount": "Pour supprimer votre compte, veuillez saisir votre adresse email ci-dessous",
+        "confirm": "Êtes-vous sur de vouloir supprimer votre compte ?"
+      }
     }
   }
 }
