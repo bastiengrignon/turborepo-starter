@@ -1,7 +1,8 @@
-import { isEmail, useForm } from '@mantine/form';
+import { isEmail, type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { useMutation } from '@tanstack/react-query';
 import type { TFunction } from 'i18next';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { authClient } from '../../lib/auth-client';
@@ -20,7 +21,6 @@ export const useForgotPasswordHooks = ({ t }: ForgotPasswordHooksInputProps) => 
   const navigate = useNavigate();
   const { session } = useSession();
 
-  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
   const forgotPasswordForm = useForm<ForgotPasswordFormValues>({
     mode: 'uncontrolled',
     initialValues: {
@@ -30,34 +30,32 @@ export const useForgotPasswordHooks = ({ t }: ForgotPasswordHooksInputProps) => 
     validate: {
       email: isEmail(t('errors.emailInvalid')),
     },
+    transformValues: ({ email }) => ({
+      email,
+      redirectTo: `${window.location.origin}${routes.resetPassword}`,
+    }),
+  });
+
+  const { mutate: forgotPasswordMutation, isPending: forgotPasswordLoading } = useMutation({
+    mutationFn: async (values: TransformedValues<typeof forgotPasswordForm>) =>
+      await authClient.requestPasswordReset(values),
+    onSuccess: async () => {
+      if (session) {
+        await authClient.revokeSessions();
+        await authClient.signOut();
+      }
+      notifications.show({
+        title: t('common:settings.account.emailResetTitle'),
+        message: t('common:settings.account.emailResetMessage'),
+        color: 'green',
+      });
+      navigate(routes.login);
+    },
   });
 
   const handleSendForgotPassword = useCallback(
-    async ({ email }: ForgotPasswordFormValues) => {
-      setForgotPasswordLoading(true);
-      await authClient.requestPasswordReset(
-        {
-          email,
-          redirectTo: `${window.location.origin}${routes.resetPassword}`,
-        },
-        {
-          onResponse: () => setForgotPasswordLoading(false),
-          onSuccess: async () => {
-            if (session) {
-              await authClient.revokeSessions();
-              await authClient.signOut();
-            }
-            notifications.show({
-              title: t('common:settings.account.emailResetTitle'),
-              message: t('common:settings.account.emailResetMessage'),
-              color: 'green',
-            });
-            navigate(routes.login);
-          },
-        }
-      );
-    },
-    [t, navigate, session]
+    async (values: TransformedValues<typeof forgotPasswordForm>) => forgotPasswordMutation(values),
+    [forgotPasswordMutation]
   );
 
   return {

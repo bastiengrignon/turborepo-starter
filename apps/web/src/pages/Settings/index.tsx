@@ -31,6 +31,7 @@ const Settings: FC = () => {
     toggleVisiblePassword,
     updateUserLoading,
     updatePasswordLoading,
+    resetPasswordLoading,
     handleUpdateProfilePicture,
     handleUploadProfilePicture,
     handleUpdateUser,
@@ -126,7 +127,12 @@ const Settings: FC = () => {
               <Button type="submit" loading={updatePasswordLoading}>
                 {t('settings.account.updatePassword')}
               </Button>
-              <Button color="yellow" rightSection={<TbRefresh />} onClick={handleResetPassword}>
+              <Button
+                color="yellow"
+                rightSection={<TbRefresh />}
+                onClick={handleResetPassword}
+                loading={resetPasswordLoading}
+              >
                 {t('settings.account.resetPassword')}
               </Button>
             </Group>

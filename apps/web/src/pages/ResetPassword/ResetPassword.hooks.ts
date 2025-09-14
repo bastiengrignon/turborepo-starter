@@ -1,8 +1,9 @@
 import { matches, matchesField, type TransformedValues, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { useMutation } from '@tanstack/react-query';
 import type { TFunction } from 'i18next';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { REGEXPS } from '../../constants/regexp';
@@ -16,9 +17,8 @@ interface ResetPasswordHooksInputProps {
 export const useResetPasswordHooks = ({ t }: ResetPasswordHooksInputProps) => {
   const navigate = useNavigate();
   const [search] = useSearchParams();
-  const token = search.get('token');
+  const token = search.get('token') || undefined;
 
-  const [resetLoading, setResetLoading] = useState(false);
   const [visiblePassword, { toggle: toggleVisiblePassword }] = useDisclosure(false);
 
   const resetPasswordForm = useForm({
@@ -32,51 +32,49 @@ export const useResetPasswordHooks = ({ t }: ResetPasswordHooksInputProps) => {
       password: matches(REGEXPS.PASSWORD, t('errors.passwordRegexp')),
       confirmPassword: matchesField('password', t('errors.confirmPassword')),
     },
-    transformValues: ({ password }) => ({ password }),
+    transformValues: ({ password }) => ({
+      newPassword: password,
+      token,
+    }),
+  });
+
+  const { mutate: resetPasswordMutation, isPending: resetPasswordLoading } = useMutation({
+    mutationFn: (values: TransformedValues<typeof resetPasswordForm>) => authClient.resetPassword(values),
+    onSuccess: () => {
+      notifications.show({
+        message: t('resetPassword.success'),
+        color: 'green',
+      });
+      navigate(routes.login);
+    },
+    onError: (error: { code: string; message: string }) => {
+      notifications.show({
+        title: error.code,
+        message: error.message,
+        color: 'red',
+      });
+    },
   });
 
   const handleSendResetPassword = useCallback(
-    async ({ password }: TransformedValues<typeof resetPasswordForm>) => {
+    async (values: TransformedValues<typeof resetPasswordForm>) => {
       if (token) {
-        setResetLoading(true);
-        await authClient.resetPassword(
-          {
-            newPassword: password,
-            token,
-          },
-          {
-            onResponse: () => setResetLoading(false),
-            onSuccess: async () => {
-              notifications.show({
-                message: t('resetPassword.success'),
-                color: 'green',
-              });
-              navigate(routes.login);
-            },
-            onError: ({ error }) => {
-              notifications.show({
-                title: error.code,
-                message: error.message,
-                color: 'red',
-              });
-            },
-          }
-        );
+        resetPasswordMutation(values);
       } else {
         notifications.show({
           title: t('common:error'),
-          message: 'Invalid token',
+          message: t('resetPassword.errors.invalidToken'),
           color: 'red',
         });
       }
     },
-    [t, token, navigate]
+    [resetPasswordMutation, t, token]
   );
 
   return {
     resetPasswordForm,
     visiblePassword,
-    resetLoading,
+    resetPasswordLoading,
     toggleVisiblePassword,
     handleSendResetPassword,
   };

@@ -9,7 +9,7 @@ import { useResetPasswordHooks } from './ResetPassword.hooks';
 
 const ResetPassword: FC = () => {
   const { t } = useTranslation('auth');
-  const { resetPasswordForm, visiblePassword, resetLoading, toggleVisiblePassword, handleSendResetPassword } =
+  const { resetPasswordForm, visiblePassword, resetPasswordLoading, toggleVisiblePassword, handleSendResetPassword } =
     useResetPasswordHooks({ t });
   return (
     <AuthLayout title={t('resetPassword.title')}>
@@ -37,7 +37,7 @@ const ResetPassword: FC = () => {
             <Anchor size="sm" component={Link} to={routes.login}>
               {t('alreadyAccount')}
             </Anchor>
-            <Button type="submit" loading={resetLoading}>
+            <Button type="submit" loading={resetPasswordLoading}>
               {t('resetPassword.button')}
             </Button>
           </Flex>

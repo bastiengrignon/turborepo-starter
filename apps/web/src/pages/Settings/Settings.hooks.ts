@@ -1,25 +1,19 @@
-import { hasLength, isEmail, matches, matchesField, useForm } from '@mantine/form';
+import { hasLength, isEmail, matches, matchesField, type TransformedValues, useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { useMutation } from '@tanstack/react-query';
 import type { TFunction } from 'i18next';
-import { type ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { type ChangeEvent, useCallback, useEffect, useRef } from 'react';
 
 import { REGEXPS } from '../../constants/regexp';
 import { authClient } from '../../lib/auth-client';
 import { useSession } from '../../lib/useSession';
 import { routes } from '../../router';
 
-interface UserFormValues {
-  firstName: string;
-  lastName: string;
+type ResetPasswordValues = {
   email: string;
-}
-
-interface PasswordFormValues {
-  currentPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
-}
+  redirectTo: string;
+};
 
 interface SettingsHooksInputProps {
   t: TFunction;
@@ -30,11 +24,9 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [updateUserLoading, setUpdateUserLoading] = useState(false);
-  const [updatePasswordLoading, setUpdatePasswordLoading] = useState(false);
   const [visiblePassword, { toggle: toggleVisiblePassword }] = useDisclosure(false);
 
-  const userForm = useForm<UserFormValues>({
+  const userForm = useForm({
     mode: 'uncontrolled',
     initialValues: {
       firstName: '',
@@ -47,8 +39,12 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
       lastName: hasLength({ min: 2 }, t('auth:errors.lastName')),
       email: isEmail(t('auth:errors.emailInvalid')),
     },
+    transformValues: ({ firstName, lastName }) => ({
+      firstName,
+      lastName,
+      name: `${firstName} ${lastName}`,
+    }),
   });
-
   const updatePasswordForm = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -60,6 +56,47 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
     validate: {
       newPassword: matches(REGEXPS.PASSWORD, t('auth:errors.passwordRegexp')),
       confirmNewPassword: matchesField('newPassword', t('auth:errors.confirmPassword')),
+    },
+    transformValues: ({ currentPassword, newPassword }) => ({
+      currentPassword,
+      newPassword,
+      revokeOtherSessions: true,
+    }),
+  });
+
+  const { mutate: updateUserMutation, isPending: updateUserLoading } = useMutation({
+    mutationFn: async (values: TransformedValues<typeof userForm>) => await authClient.updateUser(values),
+    onError: (error) => {
+      notifications.show({
+        title: t('error'),
+        message: error.message,
+        color: 'red',
+      });
+    },
+  });
+
+  const { mutate: updatePasswordMutation, isPending: updatePasswordLoading } = useMutation({
+    mutationFn: (values: TransformedValues<typeof updatePasswordForm>) => authClient.changePassword(values),
+    onError: (error) => {
+      notifications.show({
+        title: t('error'),
+        message: error.message,
+        color: 'red',
+      });
+    },
+  });
+
+  const { mutate: resetPasswordMutation, isPending: resetPasswordLoading } = useMutation({
+    mutationFn: (values: ResetPasswordValues) => authClient.requestPasswordReset(values),
+    onSuccess: async () => {
+      if (session) {
+        await authClient.revokeSessions();
+        await authClient.signOut();
+      }
+      notifications.show({
+        title: t('settings.account.emailResetTitle'),
+        message: t('settings.account.emailResetMessage'),
+      });
     },
   });
 
@@ -74,75 +111,23 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
   }, []);
 
   const handleUpdateUser = useCallback(
-    async ({ firstName, lastName }: UserFormValues) => {
-      setUpdateUserLoading(true);
-      await authClient.updateUser(
-        {
-          firstName,
-          lastName,
-          name: `${firstName} ${lastName}`,
-        },
-        {
-          onError: ({ error }) => {
-            notifications.show({
-              title: t('error'),
-              message: error.message,
-              color: 'red',
-            });
-          },
-          onResponse: () => setUpdateUserLoading(false),
-        }
-      );
-    },
-    [t]
+    (values: TransformedValues<typeof userForm>) => updateUserMutation(values),
+    [updateUserMutation]
   );
 
   const handleUpdatePassword = useCallback(
-    async (values: PasswordFormValues) => {
-      setUpdatePasswordLoading(true);
-      await authClient.changePassword(
-        {
-          currentPassword: values.currentPassword,
-          newPassword: values.newPassword,
-          revokeOtherSessions: true,
-        },
-        {
-          onResponse: () => setUpdatePasswordLoading(false),
-          onError: ({ error }) => {
-            notifications.show({
-              title: t('error'),
-              message: error.message,
-              color: 'red',
-            });
-          },
-        }
-      );
-    },
-    [t]
+    (values: TransformedValues<typeof updatePasswordForm>) => updatePasswordMutation(values),
+    [updatePasswordMutation]
   );
 
   const handleResetPassword = useCallback(async () => {
     if (user?.email) {
-      await authClient.requestPasswordReset(
-        {
-          email: user.email,
-          redirectTo: `${window.location.origin}${routes.resetPassword}`,
-        },
-        {
-          onSuccess: async () => {
-            if (session) {
-              await authClient.revokeSessions();
-              await authClient.signOut();
-            }
-            notifications.show({
-              title: t('settings.account.emailResetTitle'),
-              message: t('settings.account.emailResetMessage'),
-            });
-          },
-        }
-      );
+      resetPasswordMutation({
+        email: user.email,
+        redirectTo: `${window.location.origin}${routes.resetPassword}`,
+      });
     }
-  }, [t, user?.email, session]);
+  }, [resetPasswordMutation, user?.email]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: no Mantine form object in dependencies
   useEffect(() => {
@@ -164,6 +149,7 @@ export const useSettingsHooks = ({ t }: SettingsHooksInputProps) => {
     toggleVisiblePassword,
     updateUserLoading,
     updatePasswordLoading,
+    resetPasswordLoading,
     handleUpdateProfilePicture,
     handleUploadProfilePicture,
     handleUpdateUser,

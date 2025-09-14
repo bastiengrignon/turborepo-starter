@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import { authClient } from '../lib/auth-client';
@@ -8,16 +9,10 @@ import { routes } from '../router';
 export const useLayoutHooks = () => {
   const navigate = useNavigate();
   const { session, user, isPending } = useSession();
-
-  const handleLogout = useCallback(
-    async () =>
-      await authClient.signOut({
-        fetchOptions: {
-          onSuccess: () => navigate(routes.login),
-        },
-      }),
-    [navigate]
-  );
+  const { mutate: signOutMutation, isPending: signOutLoading } = useMutation({
+    mutationFn: () => authClient.signOut(),
+    onSuccess: () => navigate(routes.login),
+  });
 
   useEffect(() => {
     if (!isPending && !session) {
@@ -29,6 +24,7 @@ export const useLayoutHooks = () => {
     session,
     user,
     isPending,
-    handleLogout,
+    signOutLoading,
+    handleLogout: signOutMutation,
   };
 };
