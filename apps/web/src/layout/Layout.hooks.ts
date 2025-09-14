@@ -25,6 +25,6 @@ export const useLayoutHooks = () => {
     user,
     isPending,
     signOutLoading,
-    handleLogout: signOutMutation,
+    handleLogout: () => signOutMutation(),
   };
 };
