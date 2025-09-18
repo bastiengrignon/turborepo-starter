@@ -4,15 +4,18 @@ import {
   Divider,
   Group,
   Indicator,
+  Modal,
   PasswordInput,
   Stack,
   Tabs,
+  Text,
   TextInput,
   Title,
   UnstyledButton,
 } from '@mantine/core';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TbRefresh, TbTrash } from 'react-icons/tb';
 
 import SettingsPanelLayout from '../../components/SettingsPanelLayout';
 import { useMobileQuery } from '../../lib/responsive';
@@ -26,14 +29,22 @@ const Settings: FC = () => {
     user,
     userForm,
     updatePasswordForm,
+    openedDeleteAccountModal,
+    emailAddressConfirmDeleteAccount,
     visiblePassword,
-    toggleVisiblePassword,
     updateUserLoading,
     updatePasswordLoading,
+    resetPasswordLoading,
+    setEmailAddressConfirmDeleteAccount,
+    toggleVisiblePassword,
+    openDeleteAccountModal,
+    closeDeleteAccountModal,
     handleUpdateProfilePicture,
     handleUploadProfilePicture,
     handleUpdateUser,
     handleUpdatePassword,
+    handleResetPassword,
+    handleDeleteAccount,
   } = useSettingsHooks({ t });
 
   return (
@@ -120,12 +131,58 @@ const Settings: FC = () => {
                 {...updatePasswordForm.getInputProps('confirmNewPassword')}
               />
             </Stack>
-            <Button mt="md" type="submit" loading={updatePasswordLoading}>
-              {t('settings.account.updatePassword')}
-            </Button>
+            <Group mt="md" gap="xs">
+              <Button type="submit" loading={updatePasswordLoading}>
+                {t('settings.account.updatePassword')}
+              </Button>
+              <Button
+                color="yellow"
+                rightSection={<TbRefresh />}
+                onClick={handleResetPassword}
+                loading={resetPasswordLoading}
+              >
+                {t('settings.account.resetPassword')}
+              </Button>
+            </Group>
           </form>
+          <Divider my="md" color="red" />
+          <Title order={3} c="red">
+            {t('settings.account.dangerZone')}
+          </Title>
+          <Button mt="md" color="red" rightSection={<TbTrash />} onClick={openDeleteAccountModal}>
+            {t('settings.account.delete.title')}
+          </Button>
         </SettingsPanelLayout>
       </Tabs.Panel>
+      <Modal
+        opened={openedDeleteAccountModal}
+        onClose={closeDeleteAccountModal}
+        size="sm"
+        centered
+        title={t('settings.account.delete.confirm')}
+      >
+        <Stack>
+          <Text size="sm" c="dimmed">
+            {t('settings.account.delete.confirmAccount')}
+          </Text>
+          <TextInput
+            label={t('auth:email')}
+            value={emailAddressConfirmDeleteAccount}
+            onChange={setEmailAddressConfirmDeleteAccount}
+          />
+          <Group justify="flex-end">
+            <Button onClick={closeDeleteAccountModal}>{t('common:cancel')}</Button>
+            <Button
+              color="red"
+              rightSection={<TbTrash />}
+              disabled={emailAddressConfirmDeleteAccount !== user?.email}
+              onClick={handleDeleteAccount}
+            >
+              {t('common:delete')}
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Tabs>
   );
 };

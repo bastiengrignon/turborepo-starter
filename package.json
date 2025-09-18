@@ -16,7 +16,7 @@
     "lint:fix": "biome check . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.2",
+    "@biomejs/biome": "^2.2.4",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2"
   },

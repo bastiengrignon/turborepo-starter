@@ -1,7 +1,7 @@
 import { isEmail, matches, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { useMutation } from '@tanstack/react-query';
 import type { TFunction } from 'i18next';
-import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { REGEXPS } from '../../constants/regexp';
@@ -20,8 +20,6 @@ interface LoginHooksInputProps {
 export const useLoginHooks = ({ t }: LoginHooksInputProps) => {
   const navigate = useNavigate();
 
-  const [loginLoading, setLoginLoading] = useState(false);
-
   const loginForm = useForm<LoginFormValues>({
     mode: 'uncontrolled',
     initialValues: {
@@ -35,27 +33,21 @@ export const useLoginHooks = ({ t }: LoginHooksInputProps) => {
     },
   });
 
-  const handleLogin = useCallback(
-    async (values: LoginFormValues) => {
-      setLoginLoading(true);
-      await authClient.signIn.email(values, {
-        onSuccess: () => navigate(routes.home),
-        onError: ({ error }) => {
-          notifications.show({
-            title: t('common:error'),
-            message: error.message,
-            color: 'red',
-          });
-        },
-        onResponse: () => setLoginLoading(false),
+  const { mutate: loginMutation, isPending: loginLoading } = useMutation({
+    mutationFn: async (values: LoginFormValues) => await authClient.signIn.email(values),
+    onSuccess: () => navigate(routes.home),
+    onError: (error) => {
+      notifications.show({
+        title: t('common:error'),
+        message: error.message,
+        color: 'red',
       });
     },
-    [navigate, t]
-  );
+  });
 
   return {
     loginForm,
     loginLoading,
-    handleLogin,
+    handleLogin: loginMutation,
   };
 };

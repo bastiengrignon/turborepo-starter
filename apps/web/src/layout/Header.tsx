@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 
 import ColorSwitcher from '../components/ColorSwitcher';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import Loader from '../components/Loader';
 import { useMobileQuery } from '../lib/responsive';
 import { routes } from '../router';
 import { useLayoutHooks } from './Layout.hooks';
@@ -13,7 +14,7 @@ import { useLayoutHooks } from './Layout.hooks';
 const Header: FC = () => {
   const { t } = useTranslation('common');
   const isMobile = useMobileQuery();
-  const { user, handleLogout } = useLayoutHooks();
+  const { user, signOutLoading, handleLogout } = useLayoutHooks();
 
   return (
     <Flex align="center" justify="space-between" px="md" py="xs" h="100%">
@@ -43,7 +44,11 @@ const Header: FC = () => {
             <Menu.Item leftSection={<TbSettings size={16} />} component={Link} to={routes.settings}>
               {t('header.settings')}
             </Menu.Item>
-            <Menu.Item color="red" leftSection={<TbLogout size={16} />} onClick={handleLogout}>
+            <Menu.Item
+              color="red"
+              leftSection={signOutLoading ? <Loader /> : <TbLogout size={16} />}
+              onClick={handleLogout}
+            >
               {t('header.logout')}
             </Menu.Item>
           </Menu.Dropdown>

@@ -7,6 +7,7 @@ import { localization } from 'better-auth-localization';
 
 import { TIME } from '../constants';
 import serverConfig from './config';
+import { sendEmail } from './email';
 import env from './env';
 
 const prisma = new PrismaClient();
@@ -23,8 +24,16 @@ export const auth = betterAuth({
       hash: async (password) => await bcrypt.hash(password, 10),
       verify: async ({ hash, password }) => await bcrypt.compare(password, hash),
     },
+    sendResetPassword: async ({ user, url }) =>
+      await sendEmail({
+        subject: `Reset password for ${user.name}`,
+        body: `Click on the link ${url} to reset your password`,
+      }),
   },
   user: {
+    deleteUser: {
+      enabled: true,
+    },
     additionalFields: {
       firstName: { type: 'string' },
       lastName: { type: 'string' },
