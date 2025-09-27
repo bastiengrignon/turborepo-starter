@@ -1,13 +1,14 @@
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router';
 
-import PrivateRoute from './components/PrivateRoute';
-import Layout from './layout/Layout';
-import ForgotPassword from './pages/ForgotPassword';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import ResetPassword from './pages/ResetPassword';
-import Settings from './pages/Settings';
-import SignUp from './pages/SignUp';
+const Login = lazy(() => import('./pages/Login'));
+const SignUp = lazy(() => import('./pages/SignUp'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const Home = lazy(() => import('./pages/Home'));
+const Settings = lazy(() => import('./pages/Settings'));
+const PrivateRoute = lazy(() => import('./components/PrivateRoute'));
+const Layout = lazy(() => import('./layout/Layout'));
 
 export const routes = {
   home: '/',
