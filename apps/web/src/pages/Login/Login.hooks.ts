@@ -1,7 +1,8 @@
-import { isEmail, matches, useForm } from '@mantine/form';
+import { isEmail, matches, type TransformedValues, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useMutation } from '@tanstack/react-query';
 import type { TFunction } from 'i18next';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { REGEXPS } from '../../constants/regexp';
@@ -45,9 +46,14 @@ export const useLoginHooks = ({ t }: LoginHooksInputProps) => {
     },
   });
 
+  const handleSubmitLogin = useCallback(
+    (values: TransformedValues<typeof loginForm>) => loginMutation(values),
+    [loginMutation]
+  );
+
   return {
     loginForm,
     loginLoading,
-    handleLogin: loginMutation,
+    handleSubmitLogin,
   };
 };

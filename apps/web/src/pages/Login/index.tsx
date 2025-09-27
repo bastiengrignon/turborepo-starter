@@ -9,10 +9,10 @@ import { useLoginHooks } from './Login.hooks';
 
 const Login: FC = () => {
   const { t } = useTranslation('auth');
-  const { loginForm, loginLoading, handleLogin } = useLoginHooks({ t });
+  const { loginForm, loginLoading, handleSubmitLogin } = useLoginHooks({ t });
   return (
     <AuthLayout title={t('login')}>
-      <form onSubmit={loginForm.onSubmit(handleLogin)}>
+      <form onSubmit={loginForm.onSubmit(handleSubmitLogin)}>
         <Stack>
           <TextInput
             required
