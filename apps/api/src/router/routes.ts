@@ -1,14 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 
-import { HTTP_CODES } from '../constants';
+import { API_ROUTES, HTTP_CODES } from '../constants';
 import { auth } from '../utils/auth';
 import { healthcheckRoutes } from './routes/healthcheck';
 
 export const routes = async (app: FastifyInstance) => {
-  app.register(healthcheckRoutes, { prefix: '/healthcheck' });
+  app.register(healthcheckRoutes, { prefix: API_ROUTES.healthcheck });
   app.route({
     method: ['GET', 'POST'],
-    url: '/auth/*',
+    url: `${API_ROUTES.auth}/*`,
     async handler(request, reply) {
       try {
         const url = new URL(request.url, `http://${request.headers.host}`);

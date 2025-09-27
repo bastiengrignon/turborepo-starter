@@ -10,7 +10,16 @@ const Settings = lazy(() => import('./pages/Settings'));
 const PrivateRoute = lazy(() => import('./components/PrivateRoute'));
 const Layout = lazy(() => import('./layout/Layout'));
 
-export const routes = {
+interface Routes {
+  home: string;
+  login: string;
+  signup: string;
+  settings: string;
+  forgotPassword: string;
+  resetPassword: string;
+}
+
+export const routes: Routes = {
   home: '/',
   login: '/login',
   signup: '/signup',

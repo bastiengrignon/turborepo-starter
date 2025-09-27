@@ -1,3 +1,9 @@
+type ApiRoutes = {
+  defaultApiPath: string;
+  healthcheck: string;
+  auth: string;
+};
+
 export const HTTP_CODES = {
   OK: 200,
   CREATED: 201,
@@ -12,4 +18,10 @@ export const HTTP_CODES = {
 
 export const TIME = {
   SECONDS_IN_ONE_DAY: 86400,
+};
+
+export const API_ROUTES: ApiRoutes = {
+  defaultApiPath: '/api',
+  healthcheck: '/healthcheck',
+  auth: '/auth',
 };
